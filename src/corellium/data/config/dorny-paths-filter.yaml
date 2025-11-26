@@ -20,11 +20,11 @@ shell:
 static-lint:
   - '.github/workflows/commit_checks.yaml'
 javascript:
-  - 'package.json'
-  - 'package-lock.json'
+  - 'src/corellium/package.json'
+  - 'src/corellium/package-lock.json'
   - 'src/corellium/src/util/*.js'
 javascript-deps:
-  - 'package.json'
-  - 'package-lock.json'
+  - 'src/corellium/package.json'
+  - 'src/corellium/package-lock.json'
 markdown:
   - '*.md'

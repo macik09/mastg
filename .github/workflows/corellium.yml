@@ -2,7 +2,8 @@ name: Run Frida demo
 
 on:
 #   pull_request:
-#     branches: master
+#     types: [opened, synchronize, reopened]
+
 #   push:
 #     branches: master
 #   schedule:
@@ -72,6 +73,7 @@ jobs:
         with:
           cache: npm
           node-version: 24
+          cache-dependency-path: src/corellium/package-lock.json
       - name: Check Node package lock
         run: |
           npm install --package-lock-only --quiet --no-audit --no-fund
