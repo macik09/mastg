@@ -10,7 +10,7 @@ class MastgTest (private val context: Context){
     fun writeSensitiveDataToUnencryptedSQLite() {
         val username = "demoUser_sqlite"
         val userEmail = "john.doe@maswe-0006.com"
-        val accessToken = "MASTG_ACCESS_TOKEN_B4C8D2F0E7A"
+        val accessToken = "ghp_1234567890abcdefghijklmnopqrstuvABCD"
         val dbName = "PrivateUnencryptedData"
 
         try {

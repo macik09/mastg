@@ -15,19 +15,21 @@ The snippet below shows sample code that uses the default SQLite API (`context.o
 
 ### Steps
 
-1. Install the application on a test device.
-2. Open the app and exercise it to trigger the database creation and data insertion.
-3. Execute the analysis script **`run.sh`**.
-4. The script pulls the database file (`PrivateUnencryptedData.db`) and queries its content.
+1. Install the app on a device (@MASTG-TECH-0005)
+2. Make sure you have @MASTG-TOOL-0004 installed on your machine
+3. Click the **Start** button
+4. Execute `run.sh`.
+
+The script `run.sh` pulls the database file (`PrivateUnencryptedData.db`) and queries its content:
 
 {{ run.sh }}
 
 ### Observation
 
-The `output.txt` file contains the extracted content from the `Users` table, showing the sensitive PII (email address) and the access token stored in **plaintext**.
+The output contains the extracted content from the `Users` table, showing the sensitive PII (email address) and the access token stored in **plaintext**.
 
 {{ output.txt }}
 
 ### Evaluation
 
-This test fails because the application stores highly sensitive data (Access Token and PII like the user's email address) using the standard SQLite API. By default, SQLite stores data in an unencrypted file within the app's private sandbox, violating the **MASVS-STORAGE** requirement (MASWE-0006). This data is trivially accessible if an attacker achieves privileged access to the device (e.g., via root).
+This test fails because the app uses the standard SQLite API to store sensitive data, specifically an access token (secret) and the user's email address (PII), in its sandbox without additional encryption.
