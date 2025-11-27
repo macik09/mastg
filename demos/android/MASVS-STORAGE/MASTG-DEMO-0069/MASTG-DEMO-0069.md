@@ -11,7 +11,7 @@ status: new
 
 The snippet below shows sample code that uses Jetpack DataStore to store sensitive data, including PII (email) and secrets (access token or password), in **plaintext** without encryption.
 
-{{ MastgTest.kt }}
+{{ MastgTest.kt # user_preferences.proto }}
 
 ### Steps
 
