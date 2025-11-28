@@ -1,60 +1,36 @@
 ---
 platform: android
-title: Sensitive Data Stored Unencrypted via DataStore
+title: Static Analysis for Unencrypted Sensitive Data in DataStore
 id: MASTG-TEST-0305
-type: [static, dynamic]
+type: [static]
 weakness: MASWE-0006
-best-practices: [MASTG-BEST-0074]
+best-practices: [MASTG-BEST-0025]
 profiles: [L1, L2]
 status: new
 ---
 
 ## Overview
 
-This test verifies whether an app stores sensitive data — such as tokens, passwords, or personally identifiable information (PII) — using Jetpack DataStore without encryption.
-Both Preferences DataStore (backed by `.preferences_pb` file) and Proto DataStore (backed by `.proto` file) persist data in plaintext by default unless developers explicitly implement and apply an encryption layer (e.g., using `SecurityCrypto` or a custom serializer).
-The goal of this test is to detect insecure storage of sensitive information in DataStore files within the app sandbox.
-
----
+This test verifies whether the app's code uses Jetpack DataStore APIs to store sensitive data — such as tokens, passwords, or PII — without encryption. By default, both Preferences DataStore (`.preferences_pb`) and Proto DataStore (`.proto`) persist data in plaintext.
 
 ## Steps
 
-### Static Analysis
+1. Obtain the application package (APK) using @MASTG-TECH-0003.
 
-1. Obtain the application package (e.g., APK file) using @MASTG-TECH-0003.
-2. Use a static analysis technique (@MASTG-TECH-0014) to identify references to DataStore APIs such as:
-    - `androidx.datastore.preferences.preferencesDataStore`
-    - `androidx.datastore.core.DataStore` (or usage of generated Proto classes).
-    - `dataStore.edit`, `updateData`, or `write` operations.
-3. Inspect the code to determine whether:
-    - sensitive data is stored using the default, unencrypted implementation.
-    - a secure mechanism (e.g., applying an `EncryptedFile.Builder` for Preferences DataStore or using an encrypted custom serializer for Proto DataStore) is explicitly applied to the sensitive fields.
+2. Use static analysis (@MASTG-TECH-0014) to review code for calls to DataStore APIs, including:
+   - `androidx.datastore.preferences.preferencesDataStore`
+   - `androidx.datastore.core.DataStore` or usage of generated Proto classes
+   - `dataStore.edit`, `updateData`, or `write` operations
 
-### Dynamic Analysis
-
-1. Install and run the app on a rooted or emulated device (@MASTG-TECH-0005).
-2. Trigger app functionality that processes or stores sensitive data.
-3. Access the app's private storage (typically `/data/data/<package_name>/datastore/`) and locate the DataStore files. This requires accessing the app data directories (@MASTG-TECH-0008). File names usually end with:
-    - `.preferences_pb` (Preferences DataStore)
-    - `.proto` (Proto DataStore)
-4. Extract the DataStore files from the device using @MASTG-TECH-0003.
-5. Inspect the file content using a suitable tool, applying the technique for Dynamic Analysis (@MASTG-TECH-0015) to confirm whether sensitive data is stored in plaintext. _Note: Proto DataStore files require a Proto decoder for inspection._
-
----
+3. Inspect whether:
+   - sensitive data is stored using default, unencrypted DataStore,
+   - no encryption layer (e.g., `EncryptedFile.Builder` for Preferences DataStore or encrypted custom serializer for Proto DataStore) is applied to sensitive fields.
 
 ## Observation
 
-The output should indicate:
-
-- which DataStore files the app creates,
-- whether sensitive data (tokens, secrets, PII) is present inside these files,
-- whether the stored values appear in plaintext (or easily reversible format).
-
----
+- Identify DataStore files referenced in the code.
+- Determine whether sensitive data is stored without encryption.
 
 ## Evaluation
 
-The test fails if:
-
-- sensitive data is stored in DataStore files without encryption.
-- plaintext tokens, secrets, or PII can be read from the DataStore files through static or dynamic analysis.
+The test fails if the app references DataStore APIs and stores sensitive data without applying encryption.
