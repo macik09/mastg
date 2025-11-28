@@ -11,7 +11,7 @@ status: new
 
 ## Overview
 
-This test verifies whether an app stores sensitive data — such as tokens, credentials, or personally identifiable information (PII) — in SQLite databases without encryption.
+This test verifies whether an app stores sensitive data — such as tokens, credentials, or personally identifiable information (PII) — in SQLite databases (@MASTG-KNOW-0037) without encryption.
 SQLite databases created using APIs like `SQLiteOpenHelper` or `context.openOrCreateDatabase` are not encrypted by default.
 The goal of this test is to determine whether the app relies on plaintext SQLite storage instead of secure alternatives (e.g., SQLCipher or encrypted database frameworks).
 
