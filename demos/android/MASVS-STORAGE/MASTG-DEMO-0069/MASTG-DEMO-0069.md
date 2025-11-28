@@ -32,4 +32,4 @@ The output contains the extracted sensitive data, showing PII (email address) an
 
 ### Evaluation
 
-This test fails because the app uses DataStore without encryption, storing sensitive data such as an access token (secret) and the user's email address (PII) in **plaintext** within the sandbox.  
+This test fails because the app uses DataStore without encryption, storing sensitive data such as an access token (secret) and the user's email address (PII) in **plaintext** within the sandbox.
