@@ -186,29 +186,38 @@ jobs:
           fi
 
           if [ -f "$demo/build.gradle.kts.plugins" ]; then
-            plugins_content=$(cat "$demo/build.gradle.kts.plugins")
-            sed -i "s|// ADD_PLUGINS_HERE|$plugins_content|g" mas-app-android/app/build.gradle.kts
+            sed -i '/\/\/ ADD_PLUGINS_HERE/{
+              r '"$demo"'/build.gradle.kts.plugins
+              d
+            }' mas-app-android/app/build.gradle.kts
+          
             echo "Replaced plugins in build.gradle.kts for $demo"
           else
-            echo "No build.gradle.kts.libs found for $demo, skipping plugins replacement"
+            echo "No build.gradle.kts.plugins found for $demo, skipping plugins replacement"
           fi
 
           if [ -f "$demo/build.gradle.kts.sections" ]; then
-            sections_content=$(cat "$demo/build.gradle.kts.sections")
-            sed -i "s|// ADD_SECTIONS_HERE|$sections_content|g" mas-app-android/app/build.gradle.kts
+            sed -i '/\/\/ ADD_SECTIONS_HERE/{
+              r '"$demo"'/build.gradle.kts.sections
+              d
+            }' mas-app-android/app/build.gradle.kts
+          
             echo "Replaced sections in build.gradle.kts for $demo"
           else
-            echo "No build.gradle.kts.libs found for $demo, skipping sections replacement"
+            echo "No build.gradle.kts.sections found for $demo, skipping sections replacement"
           fi
 
           if [ -f "$demo/build.gradle.kts.libs" ]; then
-            libs_content=$(cat "$demo/build.gradle.kts.libs")
-            sed -i "s|// ADD_LIBS_HERE|$libs_content|g" mas-app-android/app/build.gradle.kts
+            sed -i '/\/\/ ADD_LIBS_HERE/{
+              r '"$demo"'/build.gradle.kts.libs
+              d
+            }' mas-app-android/app/build.gradle.kts
+          
             echo "Replaced libs in build.gradle.kts for $demo"
           else
             echo "No build.gradle.kts.libs found for $demo, skipping libs replacement"
           fi
-          
+
           echo "Building APK for $demo"
           cd mas-app-android
           grep -q 'org.gradle.caching=true' gradle.properties || echo -en "\norg.gradle.caching=true\norg.gradle.configuration-cache=true\n" >> gradle.properties
